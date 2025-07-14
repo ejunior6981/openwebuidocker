@@ -1,0 +1,51 @@
+version: '3.8'
+services:
+  open-webui:
+    build:.
+  container_name: open-webui-mcp
+  ports:
+      - "5669:8080"
+  environment:
+      - OLLAMA_BASE_URL=http://192.168.10.8:11434
+  volumes:
+      - open-webui_data:/app/backend/data
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+  networks:
+      - automation-stack-net
+  restart: unless-stopped
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:latest
+    container_name: n8n-for-mcp
+    ports:
+      - "5679:5678"
+    environment:
+      - GENERIC_TIMEZONE=America/Detroit
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=admin
+      - N8N_BASIC_AUTH_PASSWORD=12horsey!
+    volumes:
+      - n8n_data:/home/node/.n8n
+    networks:
+      - automation-stack-net
+    restart: unless-stopped
+  n8n-mcp:
+    image: ghcr.io/czlonkowski/n8n-mcp:latest
+    container_name: n8n-mcp
+    user: 1026:100
+    depends_on:
+      - n8n
+    environment:
+      - N8N_API_URL=http://n8n:5678
+      - N8N_API_KEY=${N8N_API_KEY}
+      - MCP_MODE=stdio
+      - LOG_LEVEL=error
+      - DISABLE_CONSOLE_OUTPUT=true
+    networks:
+      - automation-stack-net
+    restart: unless-stopped
+networks:
+  automation-stack-net:
+    driver: bridge
+volumes:
+  n8n_data:
+  open-webui_data:
