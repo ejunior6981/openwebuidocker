@@ -6,6 +6,7 @@ services:
     # This is critical for the Python tool to work.
     build: .
     container_name: open-webui-mcp
+    user: 1026:100
     ports:
       - "5669:8080"
     environment:
@@ -45,8 +46,8 @@ services:
       # This will be set using the environment variable in Portainer.
       - N8N_API_KEY=${N8N_API_KEY}
       - MCP_MODE=stdio
-      - LOG_LEVEL=error
-      - DISABLE_CONSOLE_OUTPUT=true
+      - LOG_LEVEL=info
+      - DISABLE_CONSOLE_OUTPUT=false
     networks:
       - automation-stack-net
     restart: unless-stopped
