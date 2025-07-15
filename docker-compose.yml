@@ -43,7 +43,7 @@ services:
       # This URL must point to the n8n service's INTERNAL port (5678).
       - N8N_API_URL=http://n8n:5678
       # This will be set using the environment variable in Portainer.
-      - N8N_API_KEY=${N8N_API_KEY}
+     # - N8N_API_KEY=${N8N_API_KEY}
       - MCP_MODE=stdio
       - LOG_LEVEL=error
       - DISABLE_CONSOLE_OUTPUT=true
