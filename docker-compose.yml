@@ -10,7 +10,7 @@ services:
     environment:
       - OLLAMA_BASE_URL=http://192.168.10.8:11434
     volumes:
-      - ./open-webui-data:/app/backend/data
+      - /volume1/docker/openwebui:/app/backend/data
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - automation-stack-net
@@ -28,7 +28,7 @@ services:
       - N8N_BASIC_AUTH_USER=admin
       - N8N_BASIC_AUTH_PASSWORD=12horsey!
     volumes:
-      - ./n8n-data:/home/node/.n8n
+      - /volume1/docker/n8n:/home/node/.n8n
     networks:
       - automation-stack-net
     restart: unless-stopped
