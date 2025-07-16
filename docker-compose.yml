@@ -4,7 +4,6 @@ services:
   open-webui:
     build: .
     container_name: open-webui-mcp
-    user: 1026:100
     ports:
       - "5669:8080"
     environment:
